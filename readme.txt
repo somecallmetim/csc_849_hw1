@@ -19,3 +19,11 @@ running the program
     * Inverted_Index.txt
     * Results_File.txt
 - inverted index and search results should now be in their respective files
+---------------------------------------------------------------------------------------------------------------------
+
+NOTE
+---------------------------------------------------------------------------------------------------------------------
+iLearn only allows for 5 files to be uploaded and my project is split into 3 separate python files. I'm out of time,
+so a refactor isn't in the cards. I'm going to put my Search Results into the Inverted_Index.txt file on top of
+the actual inverted index. My apologies for any inconvenience, I'm happy to fix if you don't mind waiting until
+tomorrow.
