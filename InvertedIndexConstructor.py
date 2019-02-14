@@ -1,3 +1,6 @@
+from nltk.stem import PorterStemmer
+import string
+
 class InvertedIndexTerm:
     def __init__(self, name, docId):
         self.__name = name
@@ -30,38 +33,44 @@ def remove_punctuation(value):
             result += c
     return result
 
-from nltk.stem import PorterStemmer
-import string
+def createInvertedIndex():
+    stemmer = PorterStemmer()
 
-stemmer = PorterStemmer()
+    file = open("documents.txt", "r")
 
-file = open("documents.txt", "r")
+    currentDocId = 0
+    invertedIndex = {}
 
-currentDocId = 0
-currentlyInsideADocument = False
-
-invertedIndex = {}
-
-for line in file:
-    for word in line.split():
-        if "<" in word and "</" not in word:
-            word = line.strip('<DOC ')
-            word = word.split('>')
-            currentDocId = word[0]
-        elif ">" in word:
-            pass
-        else:
-            key = str(word).lower()
-            key = remove_punctuation(key)
-            if key == "":
-                break
-            key = stemmer.stem(key)
-            if key not in invertedIndex:
-                invertedIndex[key] = InvertedIndexTerm(key, currentDocId)
+    for line in file:
+        for word in line.split():
+            if "<" in word and "</" not in word:
+                word = line.strip('<DOC ')
+                word = word.split('>')
+                currentDocId = word[0]
+            elif ">" in word:
+                pass
             else:
-                invertedIndex[key].addPosting(currentDocId)
+                key = str(word).lower()
+                key = remove_punctuation(key)
+                if key == "":
+                    break
+                key = stemmer.stem(key)
+                if key not in invertedIndex:
+                    invertedIndex[key] = InvertedIndexTerm(key, currentDocId)
+                else:
+                    invertedIndex[key].addPosting(currentDocId)
 
-for item in invertedIndex:
-    print(item)
-    print("\t" + str(invertedIndex[item].getFrequency()))
-    print("\t" + str(invertedIndex[item].getPostingList()))
+    return invertedIndex
+
+# def printInvertedIndex(invertedIndex):
+#     for item in invertedIndex:
+#         print(item)
+#         print("\t" + str(invertedIndex[item].getFrequency()))
+#         print("\t" + str(invertedIndex[item].getPostingList()))
+
+# invertedIndex = createInvertedIndex()
+#
+# for item in invertedIndex:
+#     print(item)
+#     print("\t" + str(invertedIndex[item].getFrequency()))
+#     print("\t" + str(invertedIndex[item].getPostingList()))
